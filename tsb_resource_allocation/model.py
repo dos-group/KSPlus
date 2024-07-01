@@ -78,6 +78,6 @@ class UnimodelPartial(Model):
         return res
 
 class TovarModel(Model):
-    defaultval = 128.0 * 1024.0
+    defaultval = 128.0 * 1000.0
     def get_model_failat(self, val):
         return TovarModel([1], [self.defaultval])
