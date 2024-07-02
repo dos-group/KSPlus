@@ -89,6 +89,16 @@ class TovarModel(Model):
         return TovarModel([1], [self.defaultval])
 
 
+
+
+class TovarImprovedModel(Model):
+    defaultval = 128.0 * 1000.0
+
+    def get_model_failat(self, val):
+        print(val)
+        return TovarImprovedModel([1], [val*2])
+
+
 class DefaultModel(Model):
     def get_model_failat(self, val):
         raise Exception("Default memory allocation should always be greater than used memory allocation.")

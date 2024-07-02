@@ -129,6 +129,16 @@ class TovarPredictor:
         return model.TovarModel([0], [self.fa.first_allocation(mode='waste')])
 
 
+class TovarImprovedPredictor:
+    def __init__(self, tasks, num_segments):
+        self.fa = FirstAllocation(name="my memory usage")
+        for ti in tasks:
+            self.fa.add_data_point(value=max(ti.mem), time=len(ti.mem))
+
+    def get_model(self, taskinstance):
+        return model.Unimodel([0], [self.fa.first_allocation(mode='waste')])
+
+
 class DefaultPredictor:
 
     def __init__(self, tasks, num_segments):

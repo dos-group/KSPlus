@@ -9,20 +9,21 @@ import numpy as np
 
 
 def write_results_to_csv(workflow_name, task, predictor_name, train_percent, wastage, number_train, number_test,
-                         executions, seed, execution_time):
-    filename = "../results/results_" + workflow_name + ".csv"
+                         executions, seed, execution_time, number_segments):
+    filename = "../results/results_" + workflow_name + "_" + str(number_segments) + ".csv"
 
     if not (os.path.exists(filename)):
         with open(filename, 'a', newline='\n') as csvfile:
             writer = csv.writer(csvfile, delimiter=',')
             writer.writerow(
                 ["Task", "Predictor", "Setup", "Wastage", "NumberTrain", "NumberTest", "Executions", "Seed",
-                 "ExecutionTime"])
+                 "ExecutionTime", "NumberSegments"])
 
     with open(filename, 'a', newline='\n') as csvfile:
         writer = csv.writer(csvfile, delimiter=',')
         writer.writerow(
-            [task, predictor_name, train_percent, wastage, number_train, number_test, executions, seed, execution_time])
+            [task, predictor_name, train_percent, wastage, number_train, number_test, executions, seed, execution_time,
+             number_segments])
 
 
 def plot_prediction(predictor, taskinstance):
@@ -94,6 +95,7 @@ def simulate_workflow(wfdir, numsegs=predictor.default_num_segments, trainprecen
         ("k-Segments Selective", predictor.Unipredictor2),
         ("k-Segments Partial", predictor.Unipredictor2Partial),
         ("Tovar", predictor.TovarPredictor),
+        ("Tovar-Improved", predictor.TovarImprovedPredictor),
         ("Witt", predictor.WittPredictor),
         ("Default", predictor.DefaultPredictor)
     ])
@@ -145,7 +147,7 @@ def simulate_workflow(wfdir, numsegs=predictor.default_num_segments, trainprecen
                     print(
                         f'{name}, {perc}, {s}, {pname}, {num_train}, {len(task.instances) - num_train}, {e}, {w}, {t}')
                     write_results_to_csv(defaultpath, name, pname, perc, w, num_train, len(task.instances) - num_train,
-                                         e, s, t)
+                                         e, s, t, numsegs)
                     print(f'{cursimulation}/{simulations}', file=sys.stderr, end='\r')
             for pname in execs:
                 exec = execs[pname] / len(seeds)
@@ -176,4 +178,4 @@ def simulate_workflow(wfdir, numsegs=predictor.default_num_segments, trainprecen
 
 defaultpath = "sarek"  # sarek
 
-simulate_workflow(f"../k-Segments-traces/{defaultpath if len(sys.argv) <= 1 else sys.argv[1]}", 4)
+simulate_workflow(f"../k-Segments-traces/{defaultpath if len(sys.argv) <= 1 else sys.argv[1]}", 8)
