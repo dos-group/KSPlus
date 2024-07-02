@@ -5,12 +5,13 @@ import predictor
 import os
 
 class TaskInstance:
-    def __init__(self, name, insize, innum, mem, cpu):
+    def __init__(self, name, insize, innum, mem, cpu, max_mem):
         self.name = name
         self.insize = insize
         self.innum = innum
         self.mem = mem
         self.cpu = cpu
+        self.max_mem = max_mem
 
     def plot(self, *args, **kwargs):
         plt.scatter(self.mem, *args, **kwargs)
@@ -34,7 +35,9 @@ class Task:
                 if '_metadata.csv' in file:
                     vals = pd.read_csv(f'{folder}/{file}', skiprows=3)
                     name = vals["name"][1]
-                    self.instances.append(TaskInstance(name, vals["_value"][1], vals["_value"][0], [i for (_,i) in pd.read_csv(f'{folder}/{file[:-13]}_memory.csv', skiprows=3)['_value'].items()], [i for (_,i) in pd.read_csv(f'{folder}/{file[:-13]}_cpu.csv', skiprows=3)['_value'].items()]))
+                    max_mem = vals.query('_field == "max_mem"')['_value'].iloc[0]
+                    # TODO currently quick and dirty, we could optimize read-in time, especially for bigger inputs
+                    self.instances.append(TaskInstance(name, vals["_value"][1], vals["_value"][0], [i for (_,i) in pd.read_csv(f'{folder}/{file[:-13]}_memory.csv', skiprows=3)['_value'].items()], [i for (_,i) in pd.read_csv(f'{folder}/{file[:-13]}_cpu.csv', skiprows=3)['_value'].items()],[max_mem / 1000000 for _ in pd.read_csv(f'{folder}/{file[:-13]}_memory.csv', skiprows=3)['_value'].items()]))
 
     def split(self, train_percent, seed = 18181):
         r = random.Random(seed)

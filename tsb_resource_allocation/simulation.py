@@ -94,7 +94,8 @@ def simulate_workflow(wfdir, numsegs=predictor.default_num_segments, trainprecen
         ("k-Segments Selective", predictor.Unipredictor2),
         ("k-Segments Partial", predictor.Unipredictor2Partial),
         ("Tovar", predictor.TovarPredictor),
-        ("Witt", predictor.WittPredictor)
+        ("Witt", predictor.WittPredictor),
+        ("Default", predictor.DefaultPredictor)
     ])
 
     print('-----------------------------------', file=sys.stderr)
@@ -173,6 +174,6 @@ def simulate_workflow(wfdir, numsegs=predictor.default_num_segments, trainprecen
             print(f'  {pname}: {exec}, {wast}, {time}', file=sys.stderr)
 
 
-defaultpath = "eager"  # sarek
+defaultpath = "sarek"  # sarek
 
 simulate_workflow(f"../k-Segments-traces/{defaultpath if len(sys.argv) <= 1 else sys.argv[1]}", 4)
