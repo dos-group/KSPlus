@@ -90,10 +90,10 @@ def simulate_workflow(wfdir, numsegs=predictor.default_num_segments, trainprecen
                   os.path.isdir(f'{wfdir}/{taskname}')])
     predictors = dict([
         ("KS+", predictor.Predictor),
-        ("Static", predictor.Unipredictor),
-        ("Static Partial", predictor.UnipredictorPartial),
-        ("k-Segments Selective", predictor.Unipredictor2),
-        ("k-Segments Partial", predictor.Unipredictor2Partial),
+        ("Static Selective", predictor.UnipredictorSelective),
+        ("Static Partial", predictor.Unipredictor),
+        ("k-Segments Selective", predictor.Unipredictor2Selective),
+        ("k-Segments Partial", predictor.Unipredictor2),
         ("Tovar", predictor.TovarPredictor),
         ("Tovar-Improved", predictor.TovarImprovedPredictor),
         ("Witt", predictor.WittPredictor),

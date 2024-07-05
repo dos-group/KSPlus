@@ -76,6 +76,3 @@ class WittTaskModel:
     def plot_regression(self):
         plt.scatter(self.x, self.y, color='g')
         plt.plot(self.x, self.model.predict(np.asarray([self.x]).reshape((-1, 1))), color='r')
-        
-
-    

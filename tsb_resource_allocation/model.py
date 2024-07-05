@@ -74,11 +74,11 @@ class Unimodel(Model):
         return res
 
 
-class UnimodelPartial(Model):
+class UnimodelSelective(Model):
     def get_model_failat(self, val):
         idx = bisect.bisect_right(self.segends, val)
         idx = min(idx, len(self.segends) - 1)
-        res = UnimodelPartial(self.segends, [p * 2.0 if i == idx else p for i, p in enumerate(self.segpeaks)])
+        res = UnimodelSelective(self.segends, [p * 2.0 if i == idx else p for i, p in enumerate(self.segpeaks)])
         return res
 
 

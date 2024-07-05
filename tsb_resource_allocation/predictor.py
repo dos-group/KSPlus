@@ -2,7 +2,7 @@ import model, itertools
 import numpy as np
 from sklearn.linear_model import LinearRegression
 from FirstAllocation import FirstAllocation
-from tsb_resource_allocation.default_model import Default
+from default_model import Default
 from witt_task_model import WittTaskModel as Witt
 from k_segments_model_original import KSegmentsModelOriginal as KSegments
 
@@ -21,8 +21,7 @@ class Segment:
         self.error += other.error + self.get_merge_error(other)
 
     def get_merge_error(self, other):
-        return (self.peak - other.peak) * other.size if self.peak >= other.peak else (
-                                                                                                 other.peak - self.peak) * self.size
+        return (self.peak - other.peak) * other.size if self.peak >= other.peak else (other.peak - self.peak) * self.size
 
 
 def get_segments(data, segcount):
@@ -105,18 +104,18 @@ class Unipredictor2:
         return model.Unimodel(ends, peaks)
 
 
-class UnipredictorPartial(Unipredictor):
+class UnipredictorSelective(Unipredictor):
     def get_model(self, taskinstance):
         time = self.timepred.predict([[taskinstance.insize]])[0]
-        return model.UnimodelPartial(
+        return model.UnimodelSelective(
             [int(float(time) / self.num_segments) * i for i in range(1, self.num_segments + 1)],
             [r.predict([[taskinstance.insize]])[0] + off for r, off in zip(self.peakpred, self.offsets)])
 
 
-class Unipredictor2Partial(Unipredictor2):
+class Unipredictor2Selective(Unipredictor2):
     def get_model(self, taskinstance):
         (ends, peaks) = self.kseg.predict(taskinstance.insize)
-        return model.UnimodelPartial(ends, peaks)
+        return model.UnimodelSelective(ends, peaks)
 
 
 class TovarPredictor:
