@@ -176,6 +176,6 @@ def simulate_workflow(wfdir, numsegs=predictor.default_num_segments, trainprecen
             print(f'  {pname}: {exec}, {wast}, {time}', file=sys.stderr)
 
 
-defaultpath = "sarek"  # sarek
+defaultpath = "eager"  # sarek
 
-simulate_workflow(f"../k-Segments-traces/{defaultpath if len(sys.argv) <= 1 else sys.argv[1]}", 8)
+simulate_workflow(f"../k-Segments-traces/{defaultpath if len(sys.argv) <= 1 else sys.argv[1]}", 4)
